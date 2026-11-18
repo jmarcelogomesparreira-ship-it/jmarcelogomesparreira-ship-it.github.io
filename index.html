@@ -512,7 +512,7 @@ const PROJETOS = [
     destaques:["Construído a partir da experiência real com SAP S/4HANA","Feito em 6 partes, como um produto"],
     tech:["HTML/CSS/JS","SAP S/4HANA","SVG"], url: BASE+"razao-controladoria/", img:"", video:"" },
 
-  { id:"atlas", nome:"Atlas SAP", icone:"◈", cor:"#0b6bcb", area:"SAP & Gestão", cena:"livro", largo:true,
+  { id:"atlas", nome:"Atlas SAP", icone:"◈", cor:"#0b6bcb", area:"SAP & Gestão", cena:"livro", largo:true, senha:true,
     sub:"Os módulos, transações e tabelas do SAP S/4HANA num livro visual",
     resumo:"MM, FI, CO, SD, WM, PP, QM, PM, PS, RH e Fiscal Brasil, com as transações e as tabelas que rodam por trás, trilha de estudo e quiz.",
     problema:"Quem usa SAP no dia a dia conhece as transações do seu setor, mas não enxerga como os módulos se conectam nem quais tabelas guardam cada informação.",
@@ -683,12 +683,12 @@ $('#grade').innerHTML = PROJETOS.map(p=>`
   <article class="card glass rev ${p.grande?'big':''} ${p.largo?'largo':''}" data-id="${p.id}" data-area="${p.area}" tabindex="0">
     <div class="tela">
       ${midia(p)}
-      <div class="barra"><i></i><i></i><i></i><span>${p.url ? p.url.replace('https://','') : 'demonstração privada'}</span></div>
+      <div class="barra"><i></i><i></i><i></i><span>${p.senha?'🔒 acesso com senha · ':''}${p.url ? p.url.replace('https://','') : 'demonstração privada'}</span></div>
       <div class="play glass">▶ passe o mouse</div>
       <div class="revela glass"><p>${p.resumo}</p><span class="mais">Ver detalhes do projeto →</span></div>
     </div>
     <div class="info">
-      <div class="topo"><h3><span class="ico" style="background:${p.cor}">${p.icone}</span>${p.nome}</h3><span class="area">${p.area}</span></div>
+      <div class="topo"><h3><span class="ico" style="background:${p.cor}">${p.icone}</span>${p.nome}${p.senha?' <span class="tag" style="font-size:11px">🔒 com senha</span>':''}</h3><span class="area">${p.area}</span></div>
       <p class="sub2">${p.sub}</p>
       <div class="tags">${p.tech.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     </div>
@@ -743,7 +743,10 @@ function abrir(id){
   $('#mFaz').innerHTML = p.faz.map(f=>`<li>${f}</li>`).join('');
   $('#mDest').innerHTML = p.destaques.map(f=>`<li>${f}</li>`).join('');
   $('#mTech').innerHTML = p.tech.map(t=>`<span class="tag">${t}</span>`).join('');
-  $('#mBotoes').innerHTML = p.url
+  $('#mModos').style.display = (p.url && !p.senha) ? 'flex' : 'none';
+  $('#mBotoes').innerHTML = p.senha
+    ? `<a class="btn dark" href="${p.url}" target="_blank" rel="noopener">🔒 Abrir (pede senha) ↗</a><a class="btn glass" href="https://wa.me/${PERFIL.whatsapp}?text=${encodeURIComponent('Olá, Marcelo! Gostaria da senha para ver o '+p.nome+'.')}" target="_blank" rel="noopener">Pedir a senha</a>`
+    : p.url
     ? `<a class="btn dark" href="${p.url}" target="_blank" rel="noopener">Abrir projeto ao vivo ↗</a>`
     : `<a class="btn dark" href="https://wa.me/${PERFIL.whatsapp}?text=${encodeURIComponent('Olá, Marcelo! Gostaria de ver a demonstração do '+p.nome+'.')}" target="_blank" rel="noopener">Pedir demonstração</a><p class="aviso" style="margin-top:4px">Demonstração enviada sob solicitação.</p>`;
   modal.classList.add('aberto'); modal.setAttribute('aria-hidden','false');
